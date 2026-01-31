@@ -4,6 +4,7 @@ const { main } = require("./server");
 const app = express();
 const cors = require("cors");
 const userRouter = require("./Rotues/user_routes");
+const captionRouter = require("./Rotues/caption.routes");
 const cookieParser = require('cookie-parser')
 
 
@@ -15,6 +16,7 @@ app.use(cookieParser());
 
 
 app.use("/user", userRouter)
+app.use("/caption", captionRouter)
 
 const InitalizeConnection = async () => {
     try {
