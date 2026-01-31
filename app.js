@@ -4,24 +4,29 @@ const { main } = require("./server");
 const app = express();
 const cors = require("cors");
 const userRouter = require("./Rotues/user_routes");
+const cookieParser = require('cookie-parser')
+
+
+const redisClient = require("./database/reddis");
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 
 app.use("/user", userRouter)
 
 const InitalizeConnection = async () => {
     try {
-        await Promise.all([main()])
-        console.log("CONNECTED TO DATABASE")
+        await Promise.all([main(), redisClient.connect()])
+        console.log("CONNECTED TO DATABASE and REDIS")
         app.listen(process.env.PORT, () => {
             console.log("Server is Listening at Port Number:" + process.env.PORT)
         })
 
     }
     catch (error) {
-        console.log("DATABASE CONNECTION FAILED" + error.message);
+        console.log("DATABASE/REDIS CONNECTION FAILED" + error.message);
 
     }
 }

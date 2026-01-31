@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const { Schema } = mongoose
 const bcrypt = require("bcrypt")
 
-const userSchema = new Schema({
+const captionSchema = new mongoose.Schema({
     fullname: {
         firstname: {
             type: String,
@@ -35,20 +35,56 @@ const userSchema = new Schema({
     },
     socketId: {
         type: String,
+    },
+    status: {
+        type: String,
+        enum: ["online", "offline"],
+        default: "offline"
+    },
+    vehicle: {
+        color: {
+            type: String,
+            required: true
+        },
+        plate: {
+            type: String,
+            required: true
+        },
+        capacity: {
+            type: Number,
+            required: true,
+            min: [1, "Capacity must be at least 1"],
+
+        },
+        vehicleType: {
+            type: String,
+            required: true,
+            enum: ['car', 'motocycle', 'auto']
+        }
+    },
+    location: {
+        lat: {
+            type: Number,
+        },
+        lng: {
+            type: Number,
+        }
     }
+
 }, { timestamps: true })
 
-userSchema.methods.generateToken = function () {
+
+captionSchema.methods.generateToken = function () {
     return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
 }
 
-userSchema.methods.comparePassword = function (password) {
+captionSchema.methods.comparePassword = function (password) {
     return bcrypt.compare(password, this.password)
 }
 
-userSchema.statics.hashPassword = function (password) {
+captionSchema.statics.hashPassword = function (password) {
     return bcrypt.hash(password, 10)
 }
 
-const userModel = mongoose.model("User", userSchema)
-module.exports = { userModel }
+const captionModel = mongoose.model("Caption", captionSchema)
+module.exports = { captionModel }
