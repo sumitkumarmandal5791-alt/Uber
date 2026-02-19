@@ -53,7 +53,7 @@ const loginCaption = async (req, res) => {
         const token = caption.generateToken()
 
         res.cookie("token", token, { httpOnly: true, secure: true })
-        res.status(200).json({ message: "Caption logged in successfully" })
+        res.status(200).json({ message: "Caption logged in successfully", caption })
     }
     catch (error) {
         res.status(500).json({ message: error.message })

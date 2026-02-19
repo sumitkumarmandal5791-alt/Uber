@@ -6,8 +6,7 @@ const jwt = require("jsonwebtoken")
 const registerUser = async (req, res) => {
     try {
         const { fullname: { firstname, lastname }, email, password } = req.body
-
-
+        console.log(req.body)
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists with this email" });
@@ -64,7 +63,7 @@ const loginUser = async (req, res) => {
 
         //send along with req.token inside the cookie
         res.cookie("token", token, { maxAge: 60 * 60 * 1000 })
-        res.status(201).json({ message: "use loged in successfully", person })
+        res.status(201).json({ message: "use loged in successfully", user: person })
 
     }
     catch (error) {
