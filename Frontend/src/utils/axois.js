@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClinet = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: "https://uber-lrvm.onrender.com",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
